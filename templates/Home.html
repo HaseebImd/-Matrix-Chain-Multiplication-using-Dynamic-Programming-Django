@@ -1,0 +1,93 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dynamic Programming</title>
+    <link rel="icon" type="images/x-icon" href="https://upload.wikimedia.org/wikipedia/en/e/e4/National_Textile_University_Logo.png" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  </head>
+  <body class="text-center" >
+    <nav class="navbar bg-body-white">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+            <img src="https://upload.wikimedia.org/wikipedia/en/e/e4/National_Textile_University_Logo.png" alt="Bootstrap" width="50" height="50">
+            </a>
+            <bclass="justify-content-end"><strong>22-NTU-MSCS-4008</strong></b>
+        </div>
+    </nav>
+        <div class="col-12">
+            <h2 class="mt-4 mb-5"><b><strong>Matrices Chain Multiplication using <br>Dynamic Programming</strong><b/></h2>
+            <h5 style="color:red;display:none;" id="errorMessage"><strong>Please Provide Valid Input</strong></h5>
+            <textarea class="mt-2" style="border-radius: 10px; padding: 10px;" rows="1" cols="60" id="inputValue" name="inputValue" placeholder="Enter provide Matrices Order in 1,3,2,4,5 format"></textarea><br><br>
+            <button type="button" class="btn btn-success" onclick="InputValidation()">Perform Calulation</button>
+            <div class="mt-5">
+                <p id="MinMul"></p>
+                <p id="Order"></p>
+            </div>
+        </div>
+        
+   
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+  <script>
+        function InputValidation()
+        {
+            document.getElementById('MinMul').innerHTML =''
+            document.getElementById('Order').innerHTML  =''
+            var inputValue=document.getElementById("inputValue").value
+            if(inputValue.length==0)
+            {
+                function removeError()
+                {
+                    document.getElementById('errorMessage').style.display = 'none';
+                }
+                document.getElementById('errorMessage').style.display = 'block';
+                const myTimeout = setTimeout(removeError, 3000);
+            }
+            else
+            {
+              var userData = {
+                    values: inputValue,
+                }; //Array
+                $.ajax({
+                    type: 'GET',
+                    url: 'DynamicProgramming',
+                    data: userData, // data in json format
+                    success: function (response) {
+                        if(response['Minimum_X'])
+                        {
+                            var Minimum_X = response['Minimum_X'];
+                            var OptiomalOrder = response['OptiomalOrder'];
+                            console.log(Minimum_X,OptiomalOrder)
+                            document.getElementById('MinMul').innerHTML ='<strong>Minimum Multiplications : </strong>'+Minimum_X
+                            document.getElementById('Order').innerHTML ='<strong> Multiplication Sequence : </strong>'+OptiomalOrder
+                        }
+                        else
+                        {
+                            function removeError()
+                            {
+                                document.getElementById('errorMessage').style.display = 'none';
+                            }
+                            
+                            document.getElementById('errorMessage').style.display = 'block';
+                            const myTimeout = setTimeout(removeError, 3000);
+                        }
+                    
+                    },
+                    error: function (error) {
+                        //console.log('soldHistStats error')
+                        console.log(error)
+                    },
+                    complete: function (completion) {
+                        // console.log('Sold History Loaded');
+                    }
+                })
+            }
+        }    
+    </script> 
+</html>
